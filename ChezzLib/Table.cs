@@ -46,5 +46,15 @@ namespace ChezzLib
                 throw new Exception("Cannot put piece: illegal position");
             }
         }
+
+        public void Move(Move move)
+        {
+            var piece = GetPiece(move.From);
+            if (piece == null)
+                throw new Exception(String.Format("There is no piece in position {0}", move.From.ToString()));
+
+            if(!piece.IsPossibleMove(move))
+                throw new Exception(String.Format("Move {0} is not possible with this piece {1} ", move.ToString(), piece.ToString()));
+        }
     }
 }
