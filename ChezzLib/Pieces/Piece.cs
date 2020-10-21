@@ -28,6 +28,11 @@ namespace ChezzLib.Pieces
 
         public abstract List<Move> GetPossibleMoves();
 
+        public bool IsPossibleMove(Move move)
+        {
+            return GetPossibleMoves().Contains(move);
+        }
+
         public bool Equals([AllowNull] Piece other)
         {
             return GetType() == other.GetType()
