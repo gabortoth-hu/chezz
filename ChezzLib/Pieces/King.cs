@@ -6,7 +6,7 @@ namespace ChezzLib.Pieces
 {
     public class King : Piece
     {
-        public King(PieceColor color, Table table, Position position) : base(color, table, position)
+        public King(PieceColor color, Table table) : base(color, table, 0)
         {
 
         }
@@ -15,5 +15,6 @@ namespace ChezzLib.Pieces
         {
             throw new NotImplementedException();
         }
+
     }
 }

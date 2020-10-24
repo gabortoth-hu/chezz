@@ -11,19 +11,28 @@ namespace ChezzLib.Pieces
     public abstract class Piece : IEquatable<Piece>
     {
         public PieceColor Color { get; set; }
-        //public double Value { get; set; }
+        
+        public int Value { get; }
 
         public Table Table { get; }
 
         // don't like: store should be stored in Table
-        public Position Position { get; }
+        public Position Position { get; set; }
 
-        public Piece(PieceColor Color, Table table, Position position)
+        /*public Piece(PieceColor Color, Table table)
         {
             this.Table = table;
             this.Color = Color;
-            this.Position = position;
-            table.PutPiece(this, position);
+            //this.Position = position;
+            //stable.PutPiece(this, position);
+        }*/
+
+        protected Piece(PieceColor Color, Table table, int Value)
+        {
+            this.Table = table;
+            this.Color = Color;
+            this.Value = Value;
+
         }
 
         public abstract List<Move> GetPossibleMoves();

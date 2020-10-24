@@ -6,9 +6,9 @@ namespace ChezzLib.Pieces
 {
     public class Pawn : Piece
     {
-        public Pawn(PieceColor color, Table table, Position position) : base(color, table, position)
+        public Pawn(PieceColor color, Table table) : base(color, table, 1)
         {
-
+             
         }
 
         public override List<Move> GetPossibleMoves()
@@ -45,6 +45,11 @@ namespace ChezzLib.Pieces
             }
             
             return possibleMoves;
+        }
+
+        public override string ToString()
+        {
+            return Color == PieceColor.White ? "P" : "p";
         }
     }
 }
