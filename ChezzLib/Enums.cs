@@ -10,5 +10,11 @@ namespace ChezzLib
        Black
     }
 
+    public enum MoveType
+    {
+        Normal,
+        Capture,
+        PawnReplace
+    }
 
 }
