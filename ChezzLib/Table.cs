@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ChezzLib
@@ -24,6 +26,18 @@ namespace ChezzLib
             MaxRow = rows;
             MaxFile = files;
             Pieces = new List<Piece>();
+
+            Reset();
+        }
+
+        private void Reset()
+        {
+            
+            for (int file = 1; file <= MaxFile; file++)
+            {
+                PutPiece(new Pawn(PieceColor.White, this), new Position(file,1));
+                PutPiece(new Pawn(PieceColor.Black, this), new Position(file, MaxRow));
+            }
         }
 
         public Piece GetPiece(Position position)
@@ -39,6 +53,7 @@ namespace ChezzLib
                 && position.File <= MaxFile
                 && !Pieces.Any(x => x.Position.Equals(position)))
             {
+                piece.Position = position;
                 Pieces.Add(piece);   
             }
             else
@@ -55,6 +70,36 @@ namespace ChezzLib
 
             if(!piece.IsPossibleMove(move))
                 throw new Exception(String.Format("Move {0} is not possible with this piece {1} ", move.ToString(), piece.ToString()));
+
+            piece.Position = move.To;
+            move.Capture = GetPiece(move.To) == null;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int row = MaxRow; row >=1; row--) 
+            {
+                for (int file = 1; file < MaxFile; file++)
+                {
+                    var p = GetPiece(new Position(file, row));
+                    stringBuilder.Append(p == null ? " " : p.ToString());
+                }
+                stringBuilder.Append("\n");
+            }
+            return stringBuilder.ToString();
+            
+        }
+
+        public bool CanMove(PieceColor color)
+        {
+            return Pieces.Where(x => x.Color == color).Select(x => x.GetPossibleMoves()).Count() > 0;
+        }
+
+        public int MaterialValue(PieceColor color)
+        {
+            return Pieces.Where(x => x.Color == color).Sum(x => x.Value);
         }
     }
 }

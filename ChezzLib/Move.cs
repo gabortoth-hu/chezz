@@ -10,6 +10,10 @@ namespace ChezzLib
         public Position From { get; }
         public Position To { get; }
 
+        public bool Capture { get; set; }
+        // other moves:
+        // https://en.wikipedia.org/wiki/Algebraic_notation_(chess)
+
         public Move (Position from, Position to)
         {
             From = from;
@@ -24,7 +28,9 @@ namespace ChezzLib
         public override string ToString()
         {
             // itt will be way more sophisticated... it will need piece as well...
-            return From.ToString() + To.ToString();
+            return From.ToString() 
+                + (Capture ? "x" : "")
+                + To.ToString();
         }
     }
 }
