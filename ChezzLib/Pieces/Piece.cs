@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 
 namespace ChezzLib.Pieces
@@ -8,7 +9,7 @@ namespace ChezzLib.Pieces
     /// <summary>
     /// Base class of any other piece
     /// </summary>
-    public abstract class Piece : IEquatable<Piece>
+    public abstract class Piece : IEquatable<Piece>, ICloneable
     {
         public PieceColor Color { get; set; }
         
@@ -32,13 +33,13 @@ namespace ChezzLib.Pieces
             this.Table = table;
             this.Color = Color;
             this.Value = Value;
-
         }
 
         public abstract List<Move> GetPossibleMoves();
 
         public bool IsPossibleMove(Move move)
         {
+
             return GetPossibleMoves().Contains(move);
         }
 
@@ -54,5 +55,7 @@ namespace ChezzLib.Pieces
         {
             return new { Color, Table, Position }.GetHashCode();
         }
+
+        public abstract object Clone();
     }
 }

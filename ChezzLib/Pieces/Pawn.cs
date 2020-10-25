@@ -51,5 +51,12 @@ namespace ChezzLib.Pieces
         {
             return Color == PieceColor.White ? "P" : "p";
         }
+
+        public override object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        
     }
 }

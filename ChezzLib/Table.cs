@@ -14,12 +14,14 @@ namespace ChezzLib
     /// stored in table class, but pieces should be identified somehow in this case,
     /// and it is not provided yet.)
     /// </summary>
-    public class Table
+    public class Table : ICloneable
     {
         public int MaxRow { get; set; }
         public int MaxFile { get; set; }
 
-        public List<Piece> Pieces { get; }
+        private List<Piece> Pieces { get; set;  }
+
+        
 
         public Table(int rows, int files)
         {
@@ -100,6 +102,14 @@ namespace ChezzLib
         public int MaterialValue(PieceColor color)
         {
             return Pieces.Where(x => x.Color == color).Sum(x => x.Value);
+        }
+        
+        public object Clone()
+        {
+            return new Table(this.MaxRow, this.MaxFile)
+            {
+                Pieces = this.Pieces.Select(piece => (Piece) piece.Clone()).ToList()
+            };
         }
     }
 }

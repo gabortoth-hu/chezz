@@ -11,10 +11,16 @@ namespace ChezzLib.Pieces
 
         }
 
+        public override object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
         public override List<Move> GetPossibleMoves()
         {
             throw new NotImplementedException();
         }
+
 
     }
 }

@@ -22,7 +22,7 @@ namespace ChezzLib
 
         public bool Equals([AllowNull] Move other)
         {
-            return From == other.From && To == other.To;
+            return From.Equals(other.From) && To.Equals(other.To);
         }
 
         public override string ToString()
@@ -31,6 +31,12 @@ namespace ChezzLib
             return From.ToString() 
                 + (Capture ? "x" : "")
                 + To.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            // ...
+            return 1000 * From.File + 100 * From.Row + 10 * To.File + To.Row;
         }
     }
 }

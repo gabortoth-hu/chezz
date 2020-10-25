@@ -19,7 +19,7 @@ namespace ChezzLib
 
         public bool Equals([AllowNull] Position other)
         {
-            return Row == other.Row && File == other.File;
+            return Row.Equals(other.Row) && File.Equals(other.File);
         }
 
         public override int GetHashCode()
