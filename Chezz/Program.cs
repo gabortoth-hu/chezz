@@ -23,10 +23,30 @@ namespace Chezz
             }
             */
 
+            Console.Write(table.ToString());
+            Console.ReadLine();
+
             while (table.CanMove(PieceColor.White) && table.CanMove(PieceColor.Black))
             {
-
+                Console.WriteLine("Thinking...");
+                var whiteMove = GameEngine.NextMove(table, PieceColor.White, 3);
+                if (whiteMove != null)
+                {
+                    Console.WriteLine("White: " + whiteMove.ToString());
+                    table.Move(whiteMove);
+                    var blackMove = GameEngine.NextMove(table, PieceColor.Black, 3);
+                    if (blackMove != null)
+                    {
+                        Console.WriteLine("Black: " + blackMove.ToString());
+                        table.Move(blackMove);
+                    }
+                }
+                Console.Write(table.ToString());
+                Console.ReadLine();
             }
+
+            Console.WriteLine("*** End of game ***");
+            Console.ReadLine();
 
             /*
             table.Move(new Move(new Position(1, 1), new Position(1, 2)));
