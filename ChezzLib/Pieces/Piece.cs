@@ -15,7 +15,7 @@ namespace ChezzLib.Pieces
         
         public int Value { get; }
 
-        public Table Table { get; }
+        //public Table Table { get; }
 
         // don't like: store should be stored in Table
         public Position Position { get; set; }
@@ -28,32 +28,32 @@ namespace ChezzLib.Pieces
             //stable.PutPiece(this, position);
         }*/
 
-        protected Piece(PieceColor Color, Table table, int Value)
+        protected Piece(PieceColor Color, int Value)
         {
-            this.Table = table;
+            //this.Table = table;
             this.Color = Color;
             this.Value = Value;
         }
 
-        public abstract List<Move> GetPossibleMoves();
+        public abstract List<Move> GetPossibleMoves(Table table);
 
-        public bool IsPossibleMove(Move move)
+        public bool IsPossibleMove(Move move, Table table)
         {
 
-            return GetPossibleMoves().Contains(move);
+            return GetPossibleMoves(table).Contains(move);
         }
 
         public bool Equals([AllowNull] Piece other)
         {
             return GetType() == other.GetType()
                 && Color == other.Color
-                && Table == other.Table
+                //&& Table == other.Table
                 && Position == other.Position;
         }
 
         public override int GetHashCode()
         {
-            return new { Color, Table, Position }.GetHashCode();
+            return new { Color, Position }.GetHashCode();
         }
 
         public abstract object Clone();

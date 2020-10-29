@@ -6,39 +6,39 @@ namespace ChezzLib.Pieces
 {
     public class Pawn : Piece
     {
-        public Pawn(PieceColor color, Table table) : base(color, table, 1)
+        public Pawn(PieceColor color) : base(color, 1)
         {
              
         }
 
-        public override List<Move> GetPossibleMoves()
+        public override List<Move> GetPossibleMoves(Table table)
         {
             var possibleMoves = new List<Move>();
 
-            if (Color == PieceColor.White && Table.MaxRow > Position.Row
+            if (Color == PieceColor.White && table.MaxRow > Position.Row
                 || Color == PieceColor.Black && Position.Row > 1 )
             {
                 int direction = Color == PieceColor.White ? 1 : -1;
 
                 // forward
                 var newPossiblePosition = new Position(Position.File, Position.Row + direction);
-                if (Table.GetPiece(newPossiblePosition) == null)
+                if (table.GetPiece(newPossiblePosition) == null)
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
 
                 // capture left
                 newPossiblePosition = new Position(Position.File - 1, Position.Row + direction);
                 if (Position.File > 1
-                    && Table.GetPiece(newPossiblePosition) != null
-                    && Table.GetPiece(newPossiblePosition).Color != Color)
+                    && table.GetPiece(newPossiblePosition) != null
+                    && table.GetPiece(newPossiblePosition).Color != Color)
                 {
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
                 }
 
                 // capture right
                 newPossiblePosition = new Position(Position.File + 1, Position.Row + direction);
-                if (Position.File < Table.MaxFile
-                    && Table.GetPiece(newPossiblePosition) != null
-                    && Table.GetPiece(newPossiblePosition).Color != Color)
+                if (Position.File < table.MaxFile
+                    && table.GetPiece(newPossiblePosition) != null
+                    && table.GetPiece(newPossiblePosition).Color != Color)
                 {
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
                 }

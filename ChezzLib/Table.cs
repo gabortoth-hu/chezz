@@ -37,8 +37,8 @@ namespace ChezzLib
             
             for (int file = 1; file <= MaxFile; file++)
             {
-                PutPiece(new Pawn(PieceColor.White, this), new Position(file,1));
-                PutPiece(new Pawn(PieceColor.Black, this), new Position(file, MaxRow));
+                PutPiece(new Pawn(PieceColor.White), new Position(file,1));
+                PutPiece(new Pawn(PieceColor.Black), new Position(file, MaxRow));
             }
         }
 
@@ -66,15 +66,23 @@ namespace ChezzLib
 
         public void Move(Move move)
         {
+            //TODO: allow move for to the next color only
+
             var piece = GetPiece(move.From);
             if (piece == null)
                 throw new Exception(String.Format("There is no piece in position {0}", move.From.ToString()));
 
-            if(!piece.IsPossibleMove(move))
+            if(!piece.IsPossibleMove(move, this))
                 throw new Exception(String.Format("Move {0} is not possible with this piece {1} ", move.ToString(), piece.ToString()));
 
+            // handle capture
+            move.Capture = GetPiece(move.To) != null;
+            if(move.Capture)
+            {
+                Pieces.Remove(Pieces.First(x => x.Position.Equals(move.To)));
+            }
+
             piece.Position = move.To;
-            move.Capture = GetPiece(move.To) == null;
         }
 
         public override string ToString()
@@ -83,7 +91,7 @@ namespace ChezzLib
 
             for (int row = MaxRow; row >=1; row--) 
             {
-                for (int file = 1; file < MaxFile; file++)
+                for (int file = 1; file <= MaxFile; file++)
                 {
                     var p = GetPiece(new Position(file, row));
                     stringBuilder.Append(p == null ? " " : p.ToString());
@@ -96,7 +104,7 @@ namespace ChezzLib
 
         public bool CanMove(PieceColor color)
         {
-            return Pieces.Where(x => x.Color == color).Select(x => x.GetPossibleMoves()).Count() > 0;
+            return GetPossibleMoves(color).Count() > 0;
         }
 
         public int MaterialValue(PieceColor color)
@@ -110,6 +118,11 @@ namespace ChezzLib
             {
                 Pieces = this.Pieces.Select(piece => (Piece) piece.Clone()).ToList()
             };
+        }
+
+        public List<Move> GetPossibleMoves(PieceColor color)
+        {
+            return Pieces.Where(p => p.Color == color).SelectMany(p => p.GetPossibleMoves(this)).ToList();
         }
     }
 }
