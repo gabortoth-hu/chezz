@@ -49,7 +49,7 @@ namespace ChezzLib.Pieces
 
         public override string ToString()
         {
-            return Color == PieceColor.White ? "P" : "p";
+            return Color == PieceColor.White ? "O" : "X";
         }
 
         public override object Clone()

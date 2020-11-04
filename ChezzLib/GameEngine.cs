@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Net;
 using System.Security;
 using System.Text;
@@ -9,6 +10,11 @@ namespace ChezzLib
 {
     public class GameEngine
     {
+
+        //public static int Path
+
+
+
         /// <summary>
         /// Next 'best' move for Color on a given table.
         /// (Suppose that next 'move' is for given color on the given table)
@@ -24,44 +30,20 @@ namespace ChezzLib
             int bestValue = 0;
 
             // evaluate all moves
-            foreach(var move in possibleMoves)
+            foreach (var move in possibleMoves)
             {
-                //Console.WriteLine("Depth: " + depth.ToString());
 
-                // given color's move
-                Table table2 = (Table)table.Clone();
-                table2.Move(move);
+                var value = EvaluatePath(table, move, color, depth);
 
-                // opponent's move
-                Move opponentsMove = null;
-                if (depth > 0)
-                {
-                    opponentsMove = NextMove(table2, OpponentsColor(color), depth - 1);
-                }
-                else
-                {
-                    Move opponentsBestMove = null;
-                    int opponentsBestValue = 0;
-                    foreach(var move2 in table2.GetPossibleMoves(OpponentsColor(color)))
-                    {
-                        Table table3 = (Table)table2.Clone();
-                        table3.Move(move2);
+                //if (value.Stuck != EvaluateResult.StuckType.NoStuck)
+                //    return null;
+                Console.WriteLine(move.ToString() + ": " + value.Value.ToString());
 
-                        if(opponentsBestMove == null ||opponentsBestValue < table3.MaterialValue(OpponentsColor(color)))
-                        {
-                            opponentsMove = move2;
-                            opponentsBestValue = table3.MaterialValue(OpponentsColor(color));
-                        }
-                    }
-                }
-                
-                if(opponentsMove != null)
-                    table2.Move(opponentsMove);
 
-                if(bestMove == null || bestValue < table2.MaterialValue(color))
+                if (bestMove == null || bestValue < value.Value)
                 {
                     bestMove = move;
-                    bestValue = table2.MaterialValue(color);
+                    bestValue = value.Value;
                 }
 
             }
@@ -85,14 +67,79 @@ namespace ChezzLib
             return table.MaterialValue(color) - table.MaterialValue(color == PieceColor.White ? PieceColor.Black : PieceColor.White);
         }
 
-        public static int EvaluatePath(Table table, PieceColor color, int maxDepth)
-        {
-            if(maxDepth == 0)
+        public class EvaluateResult {
+            public enum StuckType
             {
-                return ValueFor(table, color);
+                NoStuck,
+                OpponentCantMove
             }
 
-            return EvaluatePath(table, color, maxDepth - 1);
+            public StuckType Stuck { get; set; }
+            public int Value { get; set; }
+        }
+
+        public static EvaluateResult EvaluatePath(Table table, Move move, PieceColor color, int depth)
+        {
+            var table2 = (Table)table.Clone();
+            table2.Move(move);
+
+            if (depth == 0)
+            {
+                Move opponentsMove;
+                opponentsMove = BestMoveByMaterialValue(table2, OpponentsColor(color));
+                
+                if (opponentsMove != null)
+                    table2.Move(opponentsMove);
+
+                return opponentsMove == null
+                        ? new EvaluateResult() { Stuck = EvaluateResult.StuckType.OpponentCantMove }
+                        : new EvaluateResult() { Value = ValueFor(table, color) };
+            }
+            else
+            {
+
+                var opponentsMaxValue = 0;
+                Move opponentsBestMove = null;
+
+                var opponentsPossibleMoves = table2.GetPossibleMoves(OpponentsColor(color));
+                foreach (var opponentsPossibleMove in opponentsPossibleMoves)
+                {
+                    var opponentsValue = EvaluatePath(table2, opponentsPossibleMove, OpponentsColor(color), depth - 1);
+
+                    if (opponentsBestMove == null || opponentsMaxValue < opponentsValue.Value)
+                    {
+                        opponentsBestMove = opponentsPossibleMove;
+                        opponentsMaxValue = opponentsValue.Value;
+                    }
+
+                }
+
+                return opponentsBestMove == null
+                    ? new EvaluateResult() { Stuck = EvaluateResult.StuckType.OpponentCantMove }
+                    //: new EvaluateResult() { Value = MaterialValue((Table)table2.Clone(), color) };
+                    : new EvaluateResult() { Value = opponentsMaxValue*-1 };
+            }
+
+        }
+
+        public static Move BestMoveByMaterialValue(Table table, PieceColor color)
+        {
+            int maxValue = 0;
+            Move bestMove = null;
+
+            foreach (var move in table.GetPossibleMoves(color))
+            {
+                Table table2 = (Table)table.Clone();
+                table2.Move(move);
+
+                if(bestMove == null || table2.MaterialValue(color) > maxValue)
+                {
+                    maxValue = table2.MaterialValue(color);
+                    bestMove = move;
+                }
+            }
+
+            return bestMove;
         }
 
         private static int ValueFor(Table table, PieceColor color)
