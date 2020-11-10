@@ -34,12 +34,41 @@ namespace ChezzLib
 
         private void Reset()
         {
-            
+
+            // pawns
             for (int file = 1; file <= MaxFile; file++)
             {
-                PutPiece(new Pawn(PieceColor.White), new Position(file,1));
-                PutPiece(new Pawn(PieceColor.Black), new Position(file, MaxRow));
+                //PutPiece(new Pawn(PieceColor.White), new Position(file, 1));
+                PutPiece(new Pawn(PieceColor.White), new Position(file, 2));
+                PutPiece(new Pawn(PieceColor.Black), new Position(file, MaxRow-1));
+                //PutPiece(new Pawn(PieceColor.Black), new Position(file, MaxRow));
             }
+
+            // Rooks
+            PutPiece(new Rook(PieceColor.White), new Position(1, 1));
+            PutPiece(new Rook(PieceColor.White), new Position(8, 1));
+            PutPiece(new Rook(PieceColor.Black), new Position(1, 8));
+            PutPiece(new Rook(PieceColor.Black), new Position(8, 8));
+
+            // Knights
+            PutPiece(new Knight(PieceColor.White), new Position(2, 1));
+            PutPiece(new Knight(PieceColor.White), new Position(7, 1));
+            PutPiece(new Knight(PieceColor.Black), new Position(2, 8));
+            PutPiece(new Knight(PieceColor.Black), new Position(7, 8));
+
+            //Bishops
+            PutPiece(new Bishop(PieceColor.White), new Position(3, 1));
+            PutPiece(new Bishop(PieceColor.White), new Position(6, 1));
+            PutPiece(new Bishop(PieceColor.Black), new Position(3, 8));
+            PutPiece(new Bishop(PieceColor.Black), new Position(6, 8));
+
+            // Queens
+            PutPiece(new Queen(PieceColor.White), new Position(4, 1));
+            PutPiece(new Queen(PieceColor.Black), new Position(4, 8));
+
+            // Kings
+            PutPiece(new King(PieceColor.White), new Position(5, 1));
+            PutPiece(new King(PieceColor.Black), new Position(5, 8));
         }
 
         public Piece GetPiece(Position position)

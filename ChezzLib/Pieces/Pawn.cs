@@ -29,7 +29,9 @@ namespace ChezzLib.Pieces
                 newPossiblePosition = new Position(Position.File - 1, Position.Row + direction);
                 if (Position.File > 1
                     && table.GetPiece(newPossiblePosition) != null
-                    && table.GetPiece(newPossiblePosition).Color != Color)
+                    && table.GetPiece(newPossiblePosition).Color != Color
+                    // this is not really needed, in this situation king is in chess
+                    && table.GetPiece(newPossiblePosition).GetType() != typeof(King))
                 {
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
                 }
@@ -38,7 +40,9 @@ namespace ChezzLib.Pieces
                 newPossiblePosition = new Position(Position.File + 1, Position.Row + direction);
                 if (Position.File < table.MaxFile
                     && table.GetPiece(newPossiblePosition) != null
-                    && table.GetPiece(newPossiblePosition).Color != Color)
+                    && table.GetPiece(newPossiblePosition).Color != Color
+                    // this is not really needed, in this situation king is in chess
+                    && table.GetPiece(newPossiblePosition).GetType() != typeof(King))
                 {
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
                 }

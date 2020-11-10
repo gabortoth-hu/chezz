@@ -4,13 +4,12 @@ using System.Text;
 
 namespace ChezzLib.Pieces
 {
-    public class King : Piece
+    public class Bishop : Piece
     {
-        public King(PieceColor color) : base(color, 0)
+        public Bishop(PieceColor color) : base(color, 3)
         {
 
         }
-
         public override object Clone()
         {
             return this.MemberwiseClone();
@@ -24,8 +23,7 @@ namespace ChezzLib.Pieces
 
         public override string ToString()
         {
-            return Color == PieceColor.White ? "I" : "i";
+            return Color == PieceColor.White ? "B" : "b";
         }
-
     }
 }
