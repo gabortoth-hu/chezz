@@ -92,7 +92,7 @@ namespace ChezzLib
                     table2.Move(opponentsMove);
 
                 return opponentsMove == null
-                        ? new EvaluateResult() { Stuck = EvaluateResult.StuckType.OpponentCantMove }
+                        ? new EvaluateResult() { Stuck = EvaluateResult.StuckType.OpponentCantMove, Value = ValueFor(table, color) }
                         : new EvaluateResult() { Value = ValueFor(table, color) };
             }
             else
@@ -115,7 +115,7 @@ namespace ChezzLib
                 }
 
                 return opponentsBestMove == null
-                    ? new EvaluateResult() { Stuck = EvaluateResult.StuckType.OpponentCantMove }
+                    ? new EvaluateResult() { Stuck = EvaluateResult.StuckType.OpponentCantMove, Value = opponentsMaxValue * -1 }
                     //: new EvaluateResult() { Value = MaterialValue((Table)table2.Clone(), color) };
                     : new EvaluateResult() { Value = opponentsMaxValue*-1 };
             }
