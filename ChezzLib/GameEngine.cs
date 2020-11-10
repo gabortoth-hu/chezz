@@ -51,11 +51,6 @@ namespace ChezzLib
             return bestMove;
         }
 
-        public static PieceColor OpponentsColor(PieceColor color)
-        {
-            return color == PieceColor.White ? PieceColor.Black : PieceColor.White;
-        }
-
         /// <summary>
         /// Get MaterialValue for color
         /// </summary>
@@ -86,7 +81,7 @@ namespace ChezzLib
             if (depth == 0)
             {
                 Move opponentsMove;
-                opponentsMove = BestMoveByMaterialValue(table2, OpponentsColor(color));
+                opponentsMove = BestMoveByMaterialValue(table2, Helper.OpponentsColor(color));
                 
                 if (opponentsMove != null)
                     table2.Move(opponentsMove);
@@ -101,10 +96,10 @@ namespace ChezzLib
                 var opponentsMaxValue = 0;
                 Move opponentsBestMove = null;
 
-                var opponentsPossibleMoves = table2.GetPossibleMoves(OpponentsColor(color));
+                var opponentsPossibleMoves = table2.GetPossibleMoves(Helper.OpponentsColor(color));
                 foreach (var opponentsPossibleMove in opponentsPossibleMoves)
                 {
-                    var opponentsValue = EvaluatePath(table2, opponentsPossibleMove, OpponentsColor(color), depth - 1);
+                    var opponentsValue = EvaluatePath(table2, opponentsPossibleMove, Helper.OpponentsColor(color), depth - 1);
 
                     if (opponentsBestMove == null || opponentsMaxValue < opponentsValue.Value)
                     {

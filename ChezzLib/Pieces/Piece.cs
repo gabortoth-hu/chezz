@@ -15,18 +15,8 @@ namespace ChezzLib.Pieces
         
         public int Value { get; }
 
-        //public Table Table { get; }
-
         // don't like: store should be stored in Table
         public Position Position { get; set; }
-
-        /*public Piece(PieceColor Color, Table table)
-        {
-            this.Table = table;
-            this.Color = Color;
-            //this.Position = position;
-            //stable.PutPiece(this, position);
-        }*/
 
         protected Piece(PieceColor Color, int Value)
         {
@@ -57,5 +47,18 @@ namespace ChezzLib.Pieces
         }
 
         public abstract object Clone();
+
+        protected void AddPossibleMoveIfEmptyOrOpponent(Position possiblePosition, Table table, List<Move> possibleMoves)
+        {
+            if (possiblePosition.Row >=1
+                && possiblePosition.Row <= table.MaxRow
+                && possiblePosition.File >= 1
+                && possiblePosition.File <= table.MaxFile
+                && (table.GetPiece(possiblePosition) == null
+                    || table.GetPiece(possiblePosition).Color != Color))
+            {
+                possibleMoves.Add(new Move(Position, possiblePosition));
+            }
+        }
     }
 }

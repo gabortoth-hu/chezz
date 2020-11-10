@@ -34,5 +34,7 @@ namespace ChezzLib
 
             return abcArray[File - 1] + Row.ToString();
         }
+
+        //public static Position operator +(Position p) => new Position(            ,1);
     }
 }

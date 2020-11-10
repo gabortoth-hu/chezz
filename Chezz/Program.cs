@@ -10,7 +10,11 @@ namespace Chezz
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
             var table = new Table(8, 8);
+            
+            table.Reset();
+
 
             RandomEngine randomEngine = new RandomEngine();
 
@@ -23,7 +27,7 @@ namespace Chezz
             while (table.CanMove(PieceColor.White) && table.CanMove(PieceColor.Black))
             {
                 Console.WriteLine("Thinking...");
-                var whiteMove = GameEngine.NextMove(table, PieceColor.White, 4);
+                var whiteMove = GameEngine.NextMove(table, PieceColor.White, 3);
                 if (whiteMove != null)
                 {
                     Console.WriteLine("White: " + whiteMove.ToString());

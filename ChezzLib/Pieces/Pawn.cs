@@ -31,7 +31,8 @@ namespace ChezzLib.Pieces
                     && table.GetPiece(newPossiblePosition) != null
                     && table.GetPiece(newPossiblePosition).Color != Color
                     // this is not really needed, in this situation king is in chess
-                    && table.GetPiece(newPossiblePosition).GetType() != typeof(King))
+                    //&& table.GetPiece(newPossiblePosition).GetType() != typeof(King)
+                    )
                 {
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
                 }
@@ -42,7 +43,8 @@ namespace ChezzLib.Pieces
                     && table.GetPiece(newPossiblePosition) != null
                     && table.GetPiece(newPossiblePosition).Color != Color
                     // this is not really needed, in this situation king is in chess
-                    && table.GetPiece(newPossiblePosition).GetType() != typeof(King))
+                    //&& table.GetPiece(newPossiblePosition).GetType() != typeof(King)
+                    )
                 {
                     possibleMoves.Add(new Move(Position, newPossiblePosition));
                 }

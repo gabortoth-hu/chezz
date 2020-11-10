@@ -17,8 +17,18 @@ namespace ChezzLib.Pieces
 
         public override List<Move> GetPossibleMoves(Table table)
         {
-            // TODO ...
-            return new List<Move>();
+            var possibleMoves = new List<Move>();
+
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File - 2, Position.Row - 1), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File - 2, Position.Row + 1), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File - 1, Position.Row - 2), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File - 1, Position.Row + 2), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File + 2, Position.Row - 1), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File + 2, Position.Row + 1), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File + 1, Position.Row - 2), table, possibleMoves);
+            AddPossibleMoveIfEmptyOrOpponent(new Position(Position.File + 1, Position.Row + 2), table, possibleMoves);
+
+            return possibleMoves;
         }
 
         public override string ToString()

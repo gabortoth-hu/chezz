@@ -21,18 +21,16 @@ namespace ChezzLib
 
         private List<Piece> Pieces { get; set;  }
 
-        
-
         public Table(int rows, int files)
         {
             MaxRow = rows;
             MaxFile = files;
             Pieces = new List<Piece>();
 
-            Reset();
+            //Reset();
         }
 
-        private void Reset()
+        public void Reset()
         {
 
             // pawns
@@ -152,6 +150,23 @@ namespace ChezzLib
         public List<Move> GetPossibleMoves(PieceColor color)
         {
             return Pieces.Where(p => p.Color == color).SelectMany(p => p.GetPossibleMoves(this)).ToList();
+        }
+
+        public bool IsInCheck(PieceColor color)
+        {
+            var king = Pieces.First(x => x.Color == color && x.GetType() == typeof(King));
+            
+            var opponentsPossibleMoves = GetPossibleMoves(Helper.OpponentsColor(color));
+
+            return opponentsPossibleMoves.Any(x => x.To.Equals(king.Position));
+        }
+
+        public bool IsCheck(Move move)
+        {
+            var color = Pieces.First(x => x.Position.Equals(move.From)).Color;
+            var table2 = (Table)Clone();
+            table2.Move(move);
+            return IsInCheck(color);
         }
     }
 }
